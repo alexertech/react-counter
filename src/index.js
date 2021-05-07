@@ -1,28 +1,41 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 let Button = (props) => {
-	let { text, fish } = props
-	return <button onClick={fish}> {text}!!!</button>
+	let { text, clicky } = props
+	return <button onClick={clicky}> {text}!!!</button>
 }
 
 let Counter = () => {
 
 	let [count, setCount] = useState(0)
+    let [error, setError] = useState(false)
 
 	let add = () => {
 		setCount(count+1)
 	}
 
 	let subs = () => {
-		setCount(count-1)
+        if (count > 0) {
+    		setCount(count-1)
+        } else {
+           setError(true) 
+        }
+
 	}
 
 	return (
 	<div>
 		{count} <br/>
-		<Button text="add" fish={add}/>
-		<Button text="subs" fish={subs}/>
+		<Button text="add" clicky={add}/>
+		<Button text="subs" clicky={subs}/>
+        { error && (
+            <div> Stop!
+            <Button text="Ok" clicky = {
+                () => { setError(false) }
+            } />
+            </div>)
+        }
 	</div>
 	)
 }
@@ -32,7 +45,3 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();
